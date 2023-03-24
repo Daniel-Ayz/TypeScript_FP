@@ -15,25 +15,39 @@ const countLettersHelper : (text: string) => {[key: string]: number} = R.pipe(
 );
 
 /* Question 2 */
-export const isPaired: (text: string) => boolean = (text) => isPairedHelper(text);
+const parenthesis: {[x:string]: string} = {'(': ')',')': '(','[':']',']':'[','{':'}','}':'{'};
 
-const parenthesisArray = ['(',')','[',']','{','}'];
+const filterParenthesis = (array: string[]) => R.filter( (x: string) => Object.keys(parenthesis).includes(x))(array);
 
-const isPairedHelper : (text: string) => boolean = R.pipe(
+const checkBalance: (array: string[]) => string[] = (array: string[]) => R.reduce( (acc:string[], symbol:string) =>
+        symbol === '(' || symbol === '[' || symbol === '{' ? acc.concat(symbol) :
+        acc.length > 0 && parenthesis[acc[acc.length - 1]] === symbol ? R.take(acc.length - 1, acc) :
+        acc.concat(symbol)
+    , [], array)
+
+export const isPaired: (text: string) => boolean = R.pipe(
     (text: string) => stringToArray(text),
-    (array: string[]) => R.filter((symbol: string) => parenthesisArray.includes(symbol))(array),
-    (array) => R.reduce( (counter: {type1: number, type2: number, type3: number, balanced: boolean}, symbol) => {
-        symbol == '(' ? counter.type1++ :
-            symbol == ')' ? counter.type1--:
-                symbol == '[' ? counter.type2++:
-                    symbol == ']' ? counter.type2--:
-                        symbol == '{' ? counter.type3++:
-                            counter.type3--;
-        (counter.type1 < 0 || counter.type2 < 0 || counter.type3 < 0) && (counter.balanced = false);
-        return counter;
-    }, {type1: 0, type2: 0, type3: 0, balanced: true} )(array),
-    (acc: {type1: number, type2: number, type3: number, balanced: boolean}) => acc.balanced && acc.type1 == 0 && acc.type2 == 0 && acc.type3 == 0
+    filterParenthesis,
+    checkBalance,
+    (array: string[]) => array.length == 0
 );
+
+
+// const isPairedHelper : (text: string) => boolean = R.pipe(
+//     (text: string) => stringToArray(text),
+//     (array: string[]) => R.filter((symbol: string) => parenthesisArray.includes(symbol))(array),
+//     (array) => R.reduce( (counter: {type1: number, type2: number, type3: number, balanced: boolean}, symbol) => {
+//         symbol == '(' ? counter.type1++ :
+//             symbol == ')' ? counter.type1--:
+//                 symbol == '[' ? counter.type2++:
+//                     symbol == ']' ? counter.type2--:
+//                         symbol == '{' ? counter.type3++:
+//                             counter.type3--;
+//         (counter.type1 < 0 || counter.type2 < 0 || counter.type3 < 0) && (counter.balanced = false);
+//         return counter;
+//     }, {type1: 0, type2: 0, type3: 0, balanced: true} )(array),
+//     (acc: {type1: number, type2: number, type3: number, balanced: boolean}) => acc.balanced && acc.type1 == 0 && acc.type2 == 0 && acc.type3 == 0
+// );
 
 
 /* Question 3 */
