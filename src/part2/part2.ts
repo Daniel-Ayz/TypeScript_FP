@@ -32,24 +32,6 @@ export const isPaired: (text: string) => boolean = R.pipe(
     (array: string[]) => array.length == 0
 );
 
-
-// const isPairedHelper : (text: string) => boolean = R.pipe(
-//     (text: string) => stringToArray(text),
-//     (array: string[]) => R.filter((symbol: string) => parenthesisArray.includes(symbol))(array),
-//     (array) => R.reduce( (counter: {type1: number, type2: number, type3: number, balanced: boolean}, symbol) => {
-//         symbol == '(' ? counter.type1++ :
-//             symbol == ')' ? counter.type1--:
-//                 symbol == '[' ? counter.type2++:
-//                     symbol == ']' ? counter.type2--:
-//                         symbol == '{' ? counter.type3++:
-//                             counter.type3--;
-//         (counter.type1 < 0 || counter.type2 < 0 || counter.type3 < 0) && (counter.balanced = false);
-//         return counter;
-//     }, {type1: 0, type2: 0, type3: 0, balanced: true} )(array),
-//     (acc: {type1: number, type2: number, type3: number, balanced: boolean}) => acc.balanced && acc.type1 == 0 && acc.type2 == 0 && acc.type3 == 0
-// );
-
-
 /* Question 3 */
 export type WordTree = {
     root: string;
